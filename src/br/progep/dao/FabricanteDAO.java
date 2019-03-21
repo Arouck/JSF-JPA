@@ -10,7 +10,7 @@ import br.progep.util.EntityManagerUtil;
 
 public class FabricanteDAO {
 	
-	EntityManager em = null;
+	EntityManager em;
 
 	public void salvar(Fabricante fabricante) {
 
@@ -22,10 +22,14 @@ public class FabricanteDAO {
 			em.getTransaction().commit();
 
 		} catch (RuntimeException ex) {
-			ex.printStackTrace();
+
+			if (em.getTransaction() != null) {
+				em.getTransaction().rollback();
+			}
+			throw ex;
+		} finally {
+			em.close();
 		}
-		
-		em.close();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -41,10 +45,14 @@ public class FabricanteDAO {
 			em.getTransaction().commit();
 
 		} catch (RuntimeException ex) {
-			ex.printStackTrace();
+
+			if (em.getTransaction() != null) {
+				em.getTransaction().rollback();
+			}
+			throw ex;
+		} finally {
+			em.close();
 		}
-		
-		em.close();
 
 		return fabricantes;
 	}
@@ -64,10 +72,15 @@ public class FabricanteDAO {
 			em.getTransaction().commit();
 
 		} catch (RuntimeException ex) {
-			ex.printStackTrace();
-		}
 
-		em.close();
+			if (em.getTransaction() != null) {
+				em.getTransaction().rollback();
+			}
+			throw ex;
+		} finally {
+			em.close();
+		}
+		
 		return fabricante;
 	}
 	
@@ -81,10 +94,14 @@ public class FabricanteDAO {
 			em.getTransaction().commit();
 
 		} catch (RuntimeException ex) {
-			ex.printStackTrace();
+
+			if (em.getTransaction() != null) {
+				em.getTransaction().rollback();
+			}
+			throw ex;
+		} finally {
+			em.close();
 		}
-		
-		em.close();
 	}
 	
 	/*public void excluirPorCodigo(Long codigo) {
@@ -112,10 +129,14 @@ public class FabricanteDAO {
 			em.getTransaction().commit();
 
 		} catch (RuntimeException ex) {
-			ex.printStackTrace();
+
+			if (em.getTransaction() != null) {
+				em.getTransaction().rollback();
+			}
+			throw ex;
+		} finally {
+			em.close();
 		}
-		
-		em.close();
 	}
 
 }

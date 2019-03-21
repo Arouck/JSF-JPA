@@ -21,10 +21,14 @@ public class FuncionarioDAO {
 			em.getTransaction().commit();
 
 		} catch (RuntimeException ex) {
-			ex.printStackTrace();
+
+			if (em.getTransaction() != null) {
+				em.getTransaction().rollback();
+			}
+			throw ex;
+		} finally {
+			em.close();
 		}
-		
-		em.close();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -40,10 +44,14 @@ public class FuncionarioDAO {
 			em.getTransaction().commit();
 
 		} catch (RuntimeException ex) {
-			ex.printStackTrace();
+
+			if (em.getTransaction() != null) {
+				em.getTransaction().rollback();
+			}
+			throw ex;
+		} finally {
+			em.close();
 		}
-		
-		em.close();
 
 		return funcionarios;
 	}
@@ -81,10 +89,14 @@ public class FuncionarioDAO {
 			em.getTransaction().commit();
 
 		} catch (RuntimeException ex) {
-			ex.printStackTrace();
+
+			if (em.getTransaction() != null) {
+				em.getTransaction().rollback();
+			}
+			throw ex;
+		} finally {
+			em.close();
 		}
-		
-		em.close();
 	}
 	
 	/*public void excluirPorCodigo(Long codigo) {
@@ -112,10 +124,14 @@ public class FuncionarioDAO {
 			em.getTransaction().commit();
 
 		} catch (RuntimeException ex) {
-			ex.printStackTrace();
+
+			if (em.getTransaction() != null) {
+				em.getTransaction().rollback();
+			}
+			throw ex;
+		} finally {
+			em.close();
 		}
-		
-		em.close();
 	}
 
 }

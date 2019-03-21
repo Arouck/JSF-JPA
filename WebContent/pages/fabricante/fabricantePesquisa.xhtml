@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:composition template="/templates/modeloGeral.xhtml">
+
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:event listener="#{fabricanteBean.carregar}" type="preRenderView" />
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="conteudo">
+		<h:form>
+			<p:dataTable emptyMessage="Nenhum registro encontrado"
+				filteredValue="#{fabricanteBean.fabricantesFiltrados}"
+				value="#{fabricanteBean.fabricantes}" var="fabricante" rows="10"
+				paginator="true">
+
+				<f:facet name="header">
+					<h:outputText value="Fabricantes" />
+				</f:facet>
+
+
+				<f:facet name="footer">
+					<p:linkButton value="Novo"
+						outcome="/pages/fabricante/fabricanteCadastro.xhtml?faces-redirect=true" />
+				</f:facet>
+
+				<p:column headerText="Código">
+					<h:outputText value="#{fabricante.codigo}" />
+				</p:column>
+
+				<p:column headerText="Descrição" sortBy="#{fabricante.descricao}"
+					filterBy="#{fabricante.descricao}">
+					<h:outputText value="#{fabricante.descricao}" />
+				</p:column>
+
+				<p:column headerText="Opções">
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+
+</html>

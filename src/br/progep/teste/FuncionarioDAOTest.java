@@ -53,7 +53,7 @@ class FuncionarioDAOTest {
 	//@Test
 	void testExcluir() {
 		FuncionarioDAO dao = new FuncionarioDAO();
-		Funcionario funcionario = dao.buscaPorCodigo(6L);
+		Funcionario funcionario = dao.buscaPorCodigo(2L);
 		dao.excluir(funcionario);
 	}
 	
@@ -70,7 +70,7 @@ class FuncionarioDAOTest {
 		
 		FuncionarioDAO dao = new FuncionarioDAO();
 		
-		funcionario = dao.buscaPorCodigo(1L);
+		funcionario = dao.buscaPorCodigo(4L);
 		
 		funcionario.setNome("B");
 		

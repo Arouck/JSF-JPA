@@ -1,5 +1,6 @@
 package br.progep.domain;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -16,9 +17,10 @@ import javax.persistence.Table;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "tbl_produtos")
-public class Produto {
+public class Produto implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "pro_codigo")

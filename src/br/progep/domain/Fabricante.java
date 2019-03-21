@@ -1,5 +1,7 @@
 package br.progep.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,9 +13,10 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "tbl_fabricantes")
-public class Fabricante {
+public class Fabricante implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
