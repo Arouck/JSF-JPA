@@ -13,6 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -31,12 +34,17 @@ public class Produto implements Serializable {
 	@NotBlank(message = "A descrição do Produto não pode ficar em branco!")
 	private String descricao;
 	
+	@NotNull(message = "O preço é obrigatório!")
+	@DecimalMin(value = "0.00", message = "O preço não pode ser menor que {value}!")
 	@Column(name = "pro_peco", precision = 7, scale = 2, nullable = false)
 	private BigDecimal preco;
 	
+	@NotNull(message = "A quantidade é obrigatória!")
+	@Min(value = 0, message = "A quantidade não pode ser menor que {value}!")
 	@Column(name = "pro_quantidade", nullable = false)
 	private Integer quantidade;
 	
+	@NotNull(message = "O fabricante é obrigatório!")
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(nullable = false, name = "tbl_fabricantes_fab_codigo", referencedColumnName = "fab_codigo",
 				foreignKey = @ForeignKey(name = "fk_fabricante"))
@@ -87,5 +95,29 @@ public class Produto implements Serializable {
 		return "Produto [codigo = " + codigo + ", descricao = " + descricao + ", preco = " + preco + ", quantidade = "
 				+ quantidade + ", fabricante = " + fabricante + "]";
 	}
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Produto other = (Produto) obj;
+		if (codigo == null) {
+			if (other.codigo != null)
+				return false;
+		} else if (!codigo.equals(other.codigo))
+			return false;
+		return true;
+	}
 }

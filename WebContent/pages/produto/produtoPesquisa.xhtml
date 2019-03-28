@@ -10,7 +10,7 @@
 
 	<ui:define name="metadata">
 		<f:metadata>
-			<f:event listener="#{funcionarioBean.carregarPesquisa}"
+			<f:event listener="#{produtoBean.carregarPesquisa}"
 				type="preRenderView" />
 		</f:metadata>
 	</ui:define>
@@ -20,51 +20,54 @@
 		<h:form>
 
 			<p:dataTable emptyMessage="Nenhum registro encontrado"
-				filteredValue="#{funcionarioBean.funcionariosFiltrados}"
-				value="#{funcionarioBean.funcionarios}" var="funcionario" rows="10"
+				filteredValue="#{produtoBean.produtosFiltrados}"
+				value="#{produtoBean.produtos}" var="produto" rows="10"
 				paginator="true">
 
 				<f:facet name="header">
-					<h3>Funcionários</h3>
+					<h3>Produtos</h3>
 				</f:facet>
 
 				<f:facet name="footer">
 					<p:linkButton value="Novo"
-						outcome="/pages/funcionario/funcionarioCadastro.xhtml?faces-redirect=true">
+						outcome="/pages/produto/produtoCadastro.xhtml?faces-redirect=true">
 						<f:param name="acao" value="Novo" />
 					</p:linkButton>
 				</f:facet>
 
 				<p:column headerText="Código">
-					<h:outputText value="#{funcionario.codigo}" />
+					<h:outputText value="#{produto.codigo}" />
 				</p:column>
 
-				<p:column headerText="Nome" filterBy="#{funcionario.nome}"
-					sortBy="#{funcionario.nome}">
-					<h:outputText value="#{funcionario.nome}" />
+				<p:column headerText="Descrição" filterBy="#{produto.descricao}"
+					sortBy="#{produto.descricao}">
+					<h:outputText value="#{produto.descricao}" />
 				</p:column>
-
-				<p:column headerText="CPF" filterBy="#{funcionario.cpf}"
-					sortBy="#{funcionario.cpf}">
-					<h:outputText value="#{funcionario.cpf}" />
+				
+				<p:column headerText="Preço" sortBy="#{produto.preco}">
+					<h:outputText value="#{produto.preco}" />
 				</p:column>
-
-				<p:column headerText="Função" filterBy="#{funcionario.funcao}"
-					sortBy="#{funcionario.funcao}">
-					<h:outputText value="#{funcionario.funcao}" />
+				
+				<p:column headerText="Quantidade" sortBy="#{produto.quantidade}">
+					<h:outputText value="#{produto.quantidade}" />
+				</p:column>
+				
+				<p:column headerText="Fabricante" sortBy="#{produto.fabricante.descricao}"
+					filterBy="#{produto.fabricante.descricao}">
+					<h:outputText value="#{produto.fabricante.descricao}" />
 				</p:column>
 
 				<p:column headerText="Opções">
 					<p:linkButton value="Excluir"
-						outcome="/pages/funcionario/funcionarioCadastro.xhtml?faces-redirect=true">
+						outcome="/pages/produto/produtoCadastro.xhtml?faces-redirect=true">
 						<f:param name="acao" value="Excluir" />
-						<f:param name="cod" value="#{funcionario.codigo}" />
+						<f:param name="cod" value="#{produto.codigo}" />
 					</p:linkButton>
 
 					<p:linkButton value="Editar"
-						outcome="/pages/funcionario/funcionarioCadastro.xhtml?faces-redirect=true">
+						outcome="/pages/produto/produtoCadastro.xhtml?faces-redirect=true">
 						<f:param name="acao" value="Editar" />
-						<f:param name="cod" value="#{funcionario.codigo}" />
+						<f:param name="cod" value="#{produto.codigo}" />
 					</p:linkButton>
 				</p:column>
 			</p:dataTable>

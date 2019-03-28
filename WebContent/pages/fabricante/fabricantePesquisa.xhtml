@@ -10,7 +10,7 @@
 
 	<ui:define name="metadata">
 		<f:metadata>
-			<f:event listener="#{fabricanteBean.carregar}" type="preRenderView" />
+			<f:event listener="#{fabricanteBean.carregarPesquisa}" type="preRenderView" />
 		</f:metadata>
 	</ui:define>
 
@@ -22,13 +22,14 @@
 				paginator="true">
 
 				<f:facet name="header">
-					<h:outputText value="Fabricantes" />
+					<h3>Fabricantes</h3>
 				</f:facet>
-
 
 				<f:facet name="footer">
 					<p:linkButton value="Novo"
-						outcome="/pages/fabricante/fabricanteCadastro.xhtml?faces-redirect=true" />
+						outcome="/pages/fabricante/fabricanteCadastro.xhtml?faces-redirect=true">
+						<f:param name="acao" value="Novo" />
+					</p:linkButton>
 				</f:facet>
 
 				<p:column headerText="Código">
@@ -41,6 +42,18 @@
 				</p:column>
 
 				<p:column headerText="Opções">
+				
+					<p:linkButton value="Excluir" 
+					 outcome="/pages/fabricante/fabricanteCadastro.xhtml" >
+					 	<f:param name="acao" value="Excluir" />
+					 	<f:param name="cod" value="#{fabricante.codigo}" />
+					</p:linkButton>
+					
+					<p:linkButton value="Editar" 
+					 outcome="/pages/fabricante/fabricanteCadastro.xhtml" >
+					 	<f:param name="acao" value="Editar" />
+					 	<f:param name="cod" value="#{fabricante.codigo}" />
+					</p:linkButton>
 				</p:column>
 			</p:dataTable>
 		</h:form>

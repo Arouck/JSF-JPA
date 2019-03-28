@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:composition template="/templates/modeloGeral.xhtml">
+
+	<ui:define name="metadata" />
+	<f:metadata>
+		<f:event listener="#{vendaBean.carregarProdutos}" type="preRenderView"></f:event>
+	</f:metadata>
+	<ui:define name="conteudo">
+
+		<h:form id="frmVendaCad">
+
+			<p:dataTable emptyMessage="Nenhum registro encontrado"
+				filteredValue="#{vendaBean.produtosFiltrados}"
+				value="#{vendaBean.produtos}" var="produto" rows="4"
+				paginator="true">
+
+				<f:facet name="header">
+					<h3>Vendas</h3>
+				</f:facet>
+
+				<p:column headerText="Código">
+					<h:outputText value="#{produto.codigo}" />
+				</p:column>
+
+				<p:column headerText="Descrição" filterBy="#{produto.descricao}"
+					sortBy="#{produto.descricao}">
+					<h:outputText value="#{produto.descricao}" />
+				</p:column>
+
+				<p:column headerText="Preço" sortBy="#{produto.preco}">
+					<h:outputText value="#{produto.preco}" />
+				</p:column>
+
+				<p:column headerText="Quantidade" sortBy="#{produto.quantidade}">
+					<h:outputText value="#{produto.quantidade}" />
+				</p:column>
+
+				<p:column headerText="Fabricante"
+					sortBy="#{produto.fabricante.descricao}"
+					filterBy="#{produto.fabricante.descricao}">
+					<h:outputText value="#{produto.fabricante.descricao}" />
+				</p:column>
+
+				<p:column headerText="Opções">
+					<p:commandButton value="Adicionar"
+						actionListener="#{vendaBean.adicionar(produto)}"
+						update=":frmVendaCad:tblItens :frmVendaCad:toolVenda" />
+				</p:column>
+			</p:dataTable>
+
+			<p:separator />
+
+			<p:dataTable emptyMessage="Nenhum registro encontrado"
+				value="#{vendaBean.itens}" var="item" rows="4" paginator="true"
+				id="tblItens">
+
+				<p:column headerText="Produto">
+					<h:outputText value="#{item.produto.descricao}" />
+				</p:column>
+
+				<p:column headerText="Fabricante">
+					<h:outputText value="#{item.produto.fabricante.descricao}" />
+				</p:column>
+
+				<p:column headerText="Quantidade">
+					<h:outputText value="#{item.quantidade}" />
+				</p:column>
+
+				<p:column headerText="Valor Parcial">
+					<h:outputText value="#{item.valor}" />
+				</p:column>
+
+				<p:column headerText="Opções">
+					<p:commandButton value="Remover"
+						actionListener="#{vendaBean.remover(item)}"
+						update=":frmVendaCad:tblItens :frmVendaCad:toolVenda" />
+				</p:column>
+			</p:dataTable>
+
+			<p:separator />
+
+			<p:toolbar id="toolVenda">
+
+				<f:facet name="left">
+					<h:outputText value="Valor total: #{vendaBean.venda.valor}" />
+				</f:facet>
+
+				<f:facet name="right">
+					<p:commandButton value="Finalizar Compra" />
+				</f:facet>
+			</p:toolbar>
+
+
+		</h:form>
+
+
+		<p:dialog modal="true" draggable="true" resizable="false"
+			closable="true" header="Carrinho de Compras">
+			<h:form id="frmDialog">
+				<h:panelGrid columns="1" >
+					<h:outputText value="Horário: " />
+					<h:outputText value="Funcionário: " />
+					<h:outputText value="Total: " />
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Finalizar Venda" />
+					<p:commandButton value="Voltar" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+
+</ui:composition>
+</html>
