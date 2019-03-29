@@ -14,11 +14,10 @@ public class VendaDAO {
 	public void salvar(Venda venda) {
 
 		em = EntityManagerUtil.getEntityManager();
-
 		try {
 
 			em.getTransaction().begin();
-
+			
 			em.persist(venda);
 
 			em.getTransaction().commit();
@@ -31,7 +30,34 @@ public class VendaDAO {
 			throw ex;
 		} finally {
 			em.close();
+			
+			
 		}
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Venda capturarUltimo() {
+		em = EntityManagerUtil.getEntityManager();
+
+		List<Venda> vendas = null;
+
+		try {
+			em.getTransaction().begin();
+			vendas = em.createQuery("FROM " + Venda.class.getName()).getResultList();
+			em.getTransaction().commit();
+			
+		} catch (RuntimeException ex) {
+			if (em.getTransaction() != null) {
+				em.getTransaction().rollback();
+			}
+			throw ex;
+		} finally {
+			em.close();
+		}
+		Venda venda = vendas.get(vendas.size() - 1);
+		return venda;
+		
 	}
 
 	@SuppressWarnings("unchecked")

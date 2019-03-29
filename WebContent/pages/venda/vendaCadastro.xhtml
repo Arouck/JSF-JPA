@@ -51,7 +51,7 @@
 				<p:column headerText="Opções">
 					<p:commandButton value="Adicionar"
 						actionListener="#{vendaBean.adicionar(produto)}"
-						update=":frmVendaCad:tblItens :frmVendaCad:toolVenda" />
+						update=":frmVendaCad:tblItens :frmVendaCad:txtVendaTotal" />
 				</p:column>
 			</p:dataTable>
 
@@ -80,38 +80,51 @@
 				<p:column headerText="Opções">
 					<p:commandButton value="Remover"
 						actionListener="#{vendaBean.remover(item)}"
-						update=":frmVendaCad:tblItens :frmVendaCad:toolVenda" />
+						update=":frmVendaCad:tblItens :frmVendaCad:txtVendaTotal" />
 				</p:column>
 			</p:dataTable>
 
 			<p:separator />
 
-			<p:toolbar id="toolVenda">
-
+			<p:toolbar>
 				<f:facet name="left">
-					<h:outputText value="Valor total: #{vendaBean.venda.valor}" />
+					<h:outputText id="txtVendaTotal"
+						value="Valor total: #{vendaBean.venda.valor}" />
 				</f:facet>
 
 				<f:facet name="right">
-					<p:commandButton value="Finalizar Compra" />
+					<p:commandButton value="Finalizar Venda"
+					oncomplete="PF('wvDlgFinVenda').show()"
+					actionListener="#{vendaBean.carregarDadosVenda}"
+					update=":dlgFinVenda" />
 				</f:facet>
 			</p:toolbar>
-
-
 		</h:form>
 
 
 		<p:dialog modal="true" draggable="true" resizable="false"
-			closable="true" header="Carrinho de Compras">
+			closable="true" header="Carrinho de Compras"
+			widgetVar="wvDlgFinVenda" appendTo="@(body)"
+			id="dlgFinVenda">
 			<h:form id="frmDialog">
-				<h:panelGrid columns="1" >
-					<h:outputText value="Horário: " />
+				<h:panelGrid columns="2" >
+				
+					<h:outputText value="Horário: "/>
+					<h:outputText value="#{vendaBean.venda.horario}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Sao_Paulo" />
+					</h:outputText>
 					<h:outputText value="Funcionário: " />
+					<h:outputText value="#{vendaBean.venda.funcionario.nome}" />
 					<h:outputText value="Total: " />
+					<h:outputText value="#{vendaBean.venda.valor}" />
 				</h:panelGrid>
 				<h:panelGrid columns="2">
-					<p:commandButton value="Finalizar Venda" />
-					<p:commandButton value="Voltar" />
+					<p:commandButton value="Finalizar Venda"
+					actionListener="#{vendaBean.salvar}"
+					oncomplete="PF('wvDlgFinVenda').hide()"
+					update=":msgGlobal :frmVendaCad:tblItens :frmVendaCad:txtVendaTotal" />
+					<p:commandButton value="Voltar"
+					onclick="PF('wvDlgFinVenda').hide()" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>

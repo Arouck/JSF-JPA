@@ -2,12 +2,17 @@ package br.progep.bean;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import br.progep.dao.FuncionarioDAO;
+import br.progep.dao.ItemDAO;
 import br.progep.dao.ProdutoDAO;
+import br.progep.dao.VendaDAO;
+import br.progep.domain.Funcionario;
 import br.progep.domain.Item;
 import br.progep.domain.Produto;
 import br.progep.domain.Venda;
@@ -21,6 +26,48 @@ public class VendaBean {
 	private List<Produto> produtosFiltrados;
 	private List<Item> itens;
 	private Venda venda;
+	
+	public VendaBean() {
+		if(venda == null) {
+			venda = new Venda();
+			venda.setValor(new BigDecimal("0.00"));
+		}
+	}
+	
+	public void carregarDadosVenda() {
+		venda.setHorario(new Date());
+		
+		FuncionarioDAO dao = new FuncionarioDAO();
+		Funcionario funcionario = dao.buscaPorCodigo(7L);
+		venda.setFuncionario(funcionario);
+	}
+	
+	public void salvar() {
+		try {
+			VendaDAO dao = new VendaDAO();
+			ItemDAO daoI = new ItemDAO();
+			
+			dao.salvar(venda);
+			Venda venda_fk = dao.capturarUltimo();
+			
+			for(Item item : itens) {
+				item.setVenda(venda_fk);
+				
+				daoI.salvar(item);
+			}
+			
+			venda = new Venda();
+			venda.setValor(new BigDecimal("0.00"));
+			
+			itens = new ArrayList<Item>();
+			
+			FacesUtil.addMsgInfo("Venda cadastrada com sucesso!");
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			FacesUtil.addMsgError("Não foi possível cadastrar a venda: " + 
+					ex.getMessage());
+		}
+	}
 
 	public void carregarProdutos() {
 		try {
@@ -33,6 +80,14 @@ public class VendaBean {
 			ex.printStackTrace();
 			FacesUtil.addMsgError("Ocorreu um erro ao tentar listar os produtos! " + ex.getMessage());
 		}
+	}
+
+	public Venda getVenda() {
+		return venda;
+	}
+
+	public void setVenda(Venda venda) {
+		this.venda = venda;
 	}
 
 	public void adicionar(Produto produto) {
@@ -110,17 +165,5 @@ public class VendaBean {
 
 	public void setItens(List<Item> itens) {
 		this.itens = itens;
-	}
-
-	public Venda getVenda() {
-		if(venda == null) {
-			venda = new Venda();
-			venda.setValor(new BigDecimal("0.00"));
-		}
-		return venda;
-	}
-
-	public void setVenda(Venda venda) {
-		this.venda = venda;
 	}
 }
